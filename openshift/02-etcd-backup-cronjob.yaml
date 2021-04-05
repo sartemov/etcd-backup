@@ -1,0 +1,51 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: etcd-backup
+  labels:
+    app: etcd
+    component: backup
+spec:
+  schedule: "30 3 * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 5
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      template:
+        spec:
+          serviceAccountName: etcd-backup
+          restartPolicy: Never
+          dnsPolicy: ClusterFirst
+          containers:
+            - name: etcd-backup
+              image: quay.io/sartemov/s3etcd:v1
+              imagePullPolicy: IfNotPresent
+              env:
+                - name: HOST_PATH
+                  value: /host
+                - name: ETCD_BACKUP_SCRIPT
+                  value: /usr/local/bin/cluster-backup.sh
+              volumeMounts:
+                - name: host-vol
+                  mountPath: /host
+                - name: s3config-vol
+                  mountPath: /opt/.s3cfg
+                  subPath: .s3cfg
+              securityContext:
+                runAsUser: 0
+                privileged: true
+          volumes:
+            - name: s3config-vol
+              configMap:
+                name: s3config
+            - name: host-vol
+              hostPath:
+                path: /
+                type: Directory
+          nodeSelector:
+            node-role.kubernetes.io/master: ""
+          tolerations:
+            - effect: NoSchedule
+              key: node-role.kubernetes.io/master

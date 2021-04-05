@@ -1,0 +1,13 @@
+Based on solution by samuelvl: https://github.com/samuelvl/ocp4-upi-baremetal-lab/tree/master/day-two/50-etcd-backup
+
+1. Put your Minio config in s3cfg/.srcfg and create configmap with your Minio config:
+
+   oc create configmap s3config --from-file s3cfg
+
+2. Create service account and add cluster admin role
+
+   oc apply -f ./01-rbac.yaml
+
+3. Apply mainfest with conjob:
+
+   oc apply -f ./02-etcd-backup-cronjob.yaml

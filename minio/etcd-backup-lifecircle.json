@@ -1,0 +1,14 @@
+{
+    "Rules": [
+       {
+            "Expiration": {
+                "Days": 1
+            },
+            "ID": "Cluster ocp",
+            "Filter": {
+                "Prefix": ""
+            },
+            "Status": "Enabled"
+        }
+    ]
+}

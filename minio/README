@@ -1,0 +1,13 @@
+1. Create bucket etcd-backup
+2. Add user etcdbackup
+   mc admin user add minadm etcdbackup <you password here>
+3. Setup policry for user etcdbacup
+   mc admin policy add minadm etcdbackup etcdbackup.json
+   mc admin policy set minadm etcdbackup user=etcdbackup
+   mc ilm import minadm/etcd-backup < ./etcd-backup-lifecircle.json
+
+   mc ilm ls minadm/etcd-backup
+          ID          |     Prefix     |  Enabled   | Expiry |  Date/Days   |  Transition  |    Date/Days     |  Storage-Class   |          Tags
+----------------------|----------------|------------|--------|--------------|--------------|------------------|------------------|------------------------
+ Cluster ocp          |                |    ✓       |  ✓     |   1 day(s)   |     ✗        |                  |                  |
+----------------------|----------------|------------|--------|--------------|--------------|------------------|------------------|------------------------
