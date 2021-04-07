@@ -2,7 +2,7 @@
     "Rules": [
        {
             "Expiration": {
-                "Days": 1
+                "Days": 7
             },
             "ID": "Cluster ocp",
             "Filter": {

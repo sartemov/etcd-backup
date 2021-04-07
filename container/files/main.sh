@@ -1,4 +1,4 @@
-#!/bin/sh -xe
+#!/bin/sh
 
 #
 # Defaults setup
@@ -22,8 +22,12 @@ if [ -z "${SYNC_COMMAND}" ]; then
     echo "Set sync command to default value: $SYNC_COMMAND"
 fi
 
+# Prune backup files
+rm -f ${HOST_PATH}/${ETCD_BACKUP_MASTER_PATH}/*.db ${HOST_PATH}/${ETCD_BACKUP_MASTER_PATH}/*.tar.gz
+
 # Make etcd backup
 chroot ${HOST_PATH} ${ETCD_BACKUP_SCRIPT} ${ETCD_BACKUP_MASTER_PATH} 
 
 # Copy backup files (etcd and static pods) to S3 storage and prune backup files
-${SYNC_COMMAND} && rm -f ${HOST_PATH}/${ETCD_BACKUP_MASTER_PATH}/*.db ${HOST_PATH}/${ETCD_BACKUP_MASTER_PATH}/*.tar.gz
+echo "Syncing backup files with command: ${SYNC_COMMAND}"
+${SYNC_COMMAND}

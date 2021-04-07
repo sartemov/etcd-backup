@@ -11,7 +11,7 @@ spec:
       dnsPolicy: ClusterFirst
       containers:
         - name: etcd-backup
-          image: quay.io/sartemov/s3etcd:v1
+          image: quay.io/sartemov/s3etcd:v2
           imagePullPolicy: IfNotPresent
           env:
             - name: HOST_PATH
