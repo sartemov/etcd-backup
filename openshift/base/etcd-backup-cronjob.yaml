@@ -3,8 +3,7 @@ kind: CronJob
 metadata:
   name: etcd-backup
   labels:
-    app: etcd
-    component: backup
+    app.kubernetes.io/name: backup
 spec:
   schedule: "30 3 * * *"
   concurrencyPolicy: Forbid

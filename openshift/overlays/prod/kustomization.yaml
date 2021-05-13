@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+bases:
+  - ../../base
+
+resources:
+  - namespace.yaml
+
+namespace: prod-etc-backup
+
+commonLabels:
+  app.kubernetes.io/part-of: etcd-backup
+  app.kubernetes.io/version: "2"
+  app.kubernetes.io/managed-by: kustomize
+
+configMapGenerator:
+- name: s3config
+  files:
+  - s3cfg
